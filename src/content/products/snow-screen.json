@@ -1,0 +1,11 @@
+{
+  "name": "Snow Screen",
+  "mono": "❄️",
+  "accent": "#0B132B",
+  "status": "Live",
+  "order": 3,
+  "customPage": true,
+  "icon": "/icons/snowscreen-128.png",
+  "desc": "A magical 3D parallax snowfall overlay for your Android status bar, home screen, and lock screen — plus a Chrome extension that brings the snow to your browser.",
+  "platforms": ["Android", "Chrome extension"]
+}

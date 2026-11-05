@@ -1,0 +1,78 @@
+---
+/**
+ * Snow Screen privacy policy — ported from https://snowscreen.pages.dev/privacy.html.
+ * Design system: ./_design.md
+ */
+import SnowLayout from './_SnowLayout.astro';
+
+const CONTACT_EMAIL = 'hoangbinhan@gmail.com';
+---
+
+<SnowLayout
+  title="Privacy Policy - Snow Screen ❄️"
+  description="Privacy Policy for Snow Screen Android application. We respect your privacy and do not collect any personal user data."
+>
+  <main class="privacy-container">
+    <div class="privacy-header">
+      <a href="/snow-screen/" class="brand">
+        <img class="brand-icon" src="/icons/snowscreen-128.png" alt="" width="36" height="36" />
+        <span>Snow Screen</span>
+      </a>
+      <h1>Privacy Policy</h1>
+      <div class="last-updated">Last updated: February 2026</div>
+    </div>
+
+    <div class="privacy-content">
+      <p>
+        This Privacy Policy applies to the <strong>Snow Screen</strong> mobile application developed by
+        <strong>Hoang Binh An</strong>. We respect your privacy and are committed to protecting it.
+      </p>
+
+      <h2>1. Information Collection and Use</h2>
+      <p>
+        <strong
+          >Snow Screen does not collect, store, transmit, or share any personal user data or sensitive information.</strong
+        > The application operates entirely on your device.
+      </p>
+
+      <h2>2. Permissions Used by the App</h2>
+      <p>To deliver system-wide overlay snow effects, the app requests the following system permissions:</p>
+      <ul>
+        <li>
+          <strong>Display Over Other Apps (SYSTEM_ALERT_WINDOW):</strong> Required to render snowfall particles over the
+          status bar, home screen, and lock screen.
+        </li>
+        <li>
+          <strong>Foreground Service (FOREGROUND_SERVICE):</strong> Keeps the snow effect running continuously and smoothly
+          in the background.
+        </li>
+        <li>
+          <strong>Usage Stats Access (PACKAGE_USAGE_STATS):</strong> Optional permission used solely to detect when you leave
+          the home screen, allowing the "Only Home &amp; Lock Screen" feature to automatically pause snow over other apps.
+          This data is processed locally on your phone and is never saved or transmitted.
+        </li>
+        <li>
+          <strong>In-App Purchases (BILLING):</strong> Managed securely by Google Play Store to handle optional Pro feature
+          unlocking.
+        </li>
+      </ul>
+
+      <h2>3. Third-Party Services</h2>
+      <p>
+        The app uses Google Play Services, Firebase Analytics, and Google Play Billing for basic usage metrics and secure
+        purchases. These services are governed by Google's Privacy Policy.
+      </p>
+
+      <h2>4. Children's Privacy</h2>
+      <p>Snow Screen does not knowingly collect any information from children under the age of 13.</p>
+
+      <h2>5. Contact Us</h2>
+      <p>
+        If you have any questions regarding this Privacy Policy, please contact us at: <br />
+        <strong>Email:</strong> <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+      </p>
+
+      <a href="/snow-screen/" class="back-link">← Back to Snow Screen Home</a>
+    </div>
+  </main>
+</SnowLayout>

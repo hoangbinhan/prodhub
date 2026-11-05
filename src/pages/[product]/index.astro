@@ -1,0 +1,223 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import AppTile from '../../components/AppTile.astro';
+import Icon from '../../components/Icon.astro';
+import { getProducts, getPolicyIndex, type Product } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const products = await getProducts();
+  return products
+    .filter((product) => !product.data.customPage)
+    .map((product) => ({ params: { product: product.id }, props: { product } }));
+}
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const { data } = product;
+const docs = (await getPolicyIndex()).get(product.id) ?? [];
+const { hero, features, pricing, faqs } = data;
+
+const navLinks = [
+  features?.length && { href: '#features', label: 'Features' },
+  pricing?.length && { href: '#pricing', label: 'Pricing' },
+  faqs?.length && { href: '#faq', label: 'FAQ' },
+].filter(Boolean) as { href: string; label: string }[];
+---
+
+<BaseLayout title={`${data.name} — ${hero?.title ?? data.desc}`} description={data.desc} accent={data.accent}>
+  <header class="border-b border-line">
+    <nav class="container-page flex flex-wrap items-center justify-between gap-4 py-[18px]">
+      <div class="flex flex-wrap items-center gap-2">
+        <a href="/" class="px-1 py-2.5 text-[15px] font-medium text-muted no-underline hover:text-ink">All apps</a>
+        <span aria-hidden="true" class="text-faint">/</span>
+        <span class="flex items-center gap-2.5">
+          <AppTile mono={data.mono} color={data.accent} size="sm" />
+          <span class="font-display text-lg font-semibold">{data.name}</span>
+        </span>
+      </div>
+      <div class="flex flex-wrap items-center gap-1">
+        {
+          navLinks.map((l) => (
+            <Button href={l.href} variant="ghost" class="px-3.5 font-medium">
+              {l.label}
+            </Button>
+          ))
+        }
+        {
+          data.nav?.cta && (
+            <Button href={data.nav.cta.href} variant="dark" class="font-medium">
+              {data.nav.cta.label}
+            </Button>
+          )
+        }
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    {
+      hero && (
+        <section class="container-page flex flex-wrap items-center gap-14 pt-22 pb-16">
+          <div class="flex min-w-0 flex-[1_1_440px] flex-col gap-[22px]">
+            {hero.badge && (
+              <span class="self-start rounded-full bg-accent/10 px-3 py-1.5 text-[13px] font-semibold text-accent">
+                {hero.badge}
+              </span>
+            )}
+            <h1 class="m-0 font-display text-[clamp(38px,5vw,64px)] leading-[1.04] font-bold tracking-[-0.03em]">
+              {hero.title}
+            </h1>
+            <p class="m-0 max-w-[520px] text-lg leading-relaxed text-muted">{hero.subtitle}</p>
+            {(hero.primary || hero.secondary) && (
+              <div class="flex flex-wrap gap-3">
+                {hero.primary && (
+                  <Button href={hero.primary.href} variant="accent" size="lg">
+                    {hero.primary.label}
+                  </Button>
+                )}
+                {hero.secondary && (
+                  <Button href={hero.secondary.href} variant="outline" size="lg">
+                    {hero.secondary.label}
+                  </Button>
+                )}
+              </div>
+            )}
+            {hero.note && <span class="text-sm text-muted">{hero.note}</span>}
+          </div>
+
+          {hero.screenshot &&
+            (hero.screenshot.src ? (
+              <img
+                src={hero.screenshot.src}
+                alt={hero.screenshot.alt}
+                class="h-auto min-w-0 flex-[1_1_460px] rounded-[20px] border border-line"
+                loading="eager"
+              />
+            ) : (
+              <div
+                role="img"
+                aria-label={hero.screenshot.alt}
+                class="box-border flex h-[380px] min-w-0 flex-[1_1_460px] flex-col gap-3.5 rounded-[20px] bg-ink p-5"
+              >
+                <div class="flex gap-1.5">
+                  <span class="size-2.5 rounded-full bg-body" />
+                  <span class="size-2.5 rounded-full bg-body" />
+                  <span class="size-2.5 rounded-full bg-body" />
+                </div>
+                <div class="flex flex-1 flex-col items-center justify-center gap-2.5 rounded-xl bg-[#1C1C22]">
+                  <span class="font-display text-[28px] font-semibold text-white">{data.name}</span>
+                  {hero.screenshot.caption && (
+                    <span class="text-[13px] text-[#A0A0A8]">{hero.screenshot.caption}</span>
+                  )}
+                </div>
+                <div class="flex h-11 items-center gap-1 rounded-[10px] bg-[#1C1C22] px-3.5">
+                  <span class="h-[18px] w-[22%] rounded bg-accent" />
+                  <span class="h-[18px] w-[14%] rounded bg-[#3A3A44]" />
+                  <span class="h-[18px] w-[30%] rounded bg-[#3A3A44]" />
+                  <span class="h-[18px] w-[18%] rounded bg-[#3A3A44]" />
+                </div>
+              </div>
+            ))}
+        </section>
+      )
+    }
+
+    {
+      !!features?.length && (
+        <section id="features" class="container-page flex scroll-mt-6 flex-col gap-8 pt-12 pb-22">
+          <h2 class="m-0 font-display text-[34px] font-semibold tracking-[-0.02em]">What it does</h2>
+          <div class="grid grid-cols-[repeat(auto-fill,minmax(min(260px,100%),1fr))] gap-5">
+            {features.map((f) => (
+              <div class="flex flex-col gap-3 rounded-[18px] border border-line bg-white p-[26px]">
+                <Icon name={f.icon} class="text-accent" />
+                <h3 class="m-0 text-lg font-semibold">{f.title}</h3>
+                <p class="m-0 text-[15px] leading-[1.55] text-muted">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      !!pricing?.length && (
+        <section id="pricing" class="scroll-mt-6 border-y border-line bg-white">
+          <div class="container-page flex flex-col gap-8 py-20">
+            <h2 class="m-0 font-display text-[34px] font-semibold tracking-[-0.02em]">Pricing</h2>
+            <div class="grid grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))] gap-5">
+              {pricing.map((plan) => (
+                <div
+                  class:list={[
+                    'flex flex-col gap-3.5 rounded-[18px] p-[30px]',
+                    plan.highlight ? 'border-2 border-accent' : 'border border-line',
+                  ]}
+                >
+                  <h3 class="m-0 text-xl font-semibold">{plan.name}</h3>
+                  <span class="font-display text-[40px] font-bold">{plan.price}</span>
+                  <p class="m-0 text-[15px] leading-[1.55] text-muted">{plan.desc}</p>
+                  <Button
+                    href={plan.cta.href}
+                    variant={plan.highlight ? 'accent' : 'outline'}
+                    class="mt-2 self-start px-5 py-[13px]"
+                  >
+                    {plan.cta.label}
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    {
+      !!faqs?.length && (
+        <section id="faq" class="mx-auto flex max-w-[820px] scroll-mt-6 flex-col gap-5 px-6 py-20">
+          <h2 class="m-0 mb-2 font-display text-[34px] font-semibold tracking-[-0.02em]">FAQ</h2>
+          <div>
+            {faqs.map((f, i) => (
+              <details class="group border-b border-line" name="faq" open={i === 0}>
+                <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-[17px] font-semibold text-ink [&::-webkit-details-marker]:hidden">
+                  <span>{f.q}</span>
+                  <span aria-hidden="true" class="text-[22px] font-normal text-muted">
+                    <span class="group-open:hidden">+</span>
+                    <span class="hidden group-open:inline">−</span>
+                  </span>
+                </summary>
+                <p class="m-0 mb-5 text-[15px] leading-relaxed text-muted">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </main>
+
+  <footer class="border-t border-line">
+    <div class="container-page flex flex-wrap justify-between gap-4 pt-10 pb-14 text-sm text-muted">
+      <span>© {new Date().getFullYear()} {data.name} · <a href="/" class="text-body">All apps</a></span>
+      <div class="flex flex-wrap gap-5">
+        {
+          data.supportEmail && (
+            <a href={`mailto:${data.supportEmail}`} class="text-body">
+              {data.supportEmail}
+            </a>
+          )
+        }
+        {
+          docs
+            .filter((d) => d.doc !== 'delete-data')
+            .map((d) => (
+              <a href={d.href} class="text-body">
+                {d.label}
+              </a>
+            ))
+        }
+      </div>
+    </div>
+  </footer>
+</BaseLayout>

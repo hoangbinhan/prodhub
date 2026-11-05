@@ -1,0 +1,119 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/Button.astro';
+import { SITE, POLICY_DOCS } from '../../config';
+import { getPolicyIndex, parsePolicyId, productHref, type Policy } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('policies');
+  return entries.flatMap((entry) => {
+    const parsed = parsePolicyId(entry.id);
+    return parsed ? [{ params: { product: parsed.product, doc: parsed.doc }, props: { entry } }] : [];
+  });
+}
+
+interface Props {
+  entry: Policy;
+}
+
+const { entry } = Astro.props;
+const { product: slug, doc } = parsePolicyId(entry.id)!;
+const product = await getEntry('products', slug);
+if (!product) throw new Error(`Policy "${entry.id}" has no matching product "${slug}"`);
+
+const { data } = product;
+const docs = (await getPolicyIndex()).get(slug) ?? [];
+const { Content, headings } = await render(entry);
+const contactEmail = data.supportEmail ?? SITE.email;
+
+const toc = [
+  ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text })),
+  { slug: 'contact', text: `${headings.filter((h) => h.depth === 2).length + 1}. Contact` },
+];
+---
+
+<BaseLayout
+  title={`${data.name} — ${entry.data.title}`}
+  description={entry.data.summary ?? `${entry.data.title} for ${data.name}.`}
+  accent={data.accent}
+>
+  <header class="border-b border-line">
+    <nav class="container-page flex flex-wrap items-center justify-between gap-4 py-[18px]">
+      <div class="flex flex-wrap items-center gap-2 text-[15px]" aria-label="Breadcrumb">
+        <a href="/" class="px-1 py-2.5 font-medium text-muted no-underline hover:text-ink">All apps</a>
+        <span aria-hidden="true" class="text-faint">/</span>
+        <a href={productHref(slug)} class="px-1 py-2.5 font-medium text-muted no-underline hover:text-ink">
+          {data.name}
+        </a>
+        <span aria-hidden="true" class="text-faint">/</span>
+        <span class="font-semibold" aria-current="page">{POLICY_DOCS[doc]}</span>
+      </div>
+      <Button href={productHref(slug)} variant="outline" class="font-medium">Back to app</Button>
+    </nav>
+  </header>
+
+  <div class="container-page flex flex-wrap items-start gap-12 pt-14 pb-24">
+    <aside class="flex max-w-[280px] flex-[1_1_240px] flex-col gap-7 lg:sticky lg:top-6">
+      <nav class="flex flex-col gap-1" aria-label="Documents">
+        <span class="pb-2 text-xs font-semibold tracking-[0.08em] text-muted uppercase">Documents</span>
+        {
+          docs.map((d) => (
+            <a
+              href={d.href}
+              aria-current={d.doc === doc ? 'page' : undefined}
+              class:list={[
+                'rounded-[10px] px-3.5 py-[11px] text-[15px] font-medium no-underline',
+                d.doc === doc ? 'bg-ink text-white hover:text-white' : 'text-body hover:bg-well hover:text-ink',
+              ]}
+            >
+              {d.label}
+            </a>
+          ))
+        }
+      </nav>
+      <nav class="flex flex-col gap-0.5" aria-label="On this page">
+        <span class="pb-2 text-xs font-semibold tracking-[0.08em] text-muted uppercase">On this page</span>
+        {
+          toc.map((h) => (
+            <a href={`#${h.slug}`} class="py-[7px] text-sm text-muted no-underline hover:text-ink">
+              {h.text}
+            </a>
+          ))
+        }
+      </nav>
+    </aside>
+
+    <article
+      class="flex min-w-0 flex-[999_1_560px] flex-col gap-9 rounded-[20px] border border-line bg-white p-[clamp(28px,5vw,56px)]"
+    >
+      <div class="flex flex-col gap-2.5 border-b border-line-soft pb-7">
+        <h1 class="m-0 font-display text-[clamp(32px,4vw,46px)] leading-[1.1] font-bold tracking-[-0.02em]">
+          {entry.data.title}
+        </h1>
+        <span class="text-sm text-muted">
+          {data.name} · Effective {entry.data.effective} · Last updated {entry.data.updated}
+        </span>
+        {entry.data.summary && <p class="m-0 mt-2 text-base leading-[1.7] text-prose">{entry.data.summary}</p>}
+      </div>
+
+      <div class="policy-prose">
+        <Content />
+      </div>
+
+      <section id="contact" class="flex scroll-mt-6 flex-col gap-3 rounded-[14px] bg-paper p-6 text-base leading-[1.7]">
+        <h2 class="m-0 font-display text-2xl font-semibold">{toc.at(-1)!.text}</h2>
+        <p class="m-0 text-prose">
+          Questions about this document: <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+        </p>
+      </section>
+    </article>
+  </div>
+
+  <footer class="border-t border-line">
+    <div class="container-page flex flex-wrap justify-between gap-4 pt-8 pb-12 text-sm text-muted">
+      <span>© {new Date().getFullYear()} {data.name}</span>
+      <a href="/" class="text-body">All apps</a>
+    </div>
+  </footer>
+</BaseLayout>

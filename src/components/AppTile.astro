@@ -1,0 +1,37 @@
+---
+interface Props {
+  mono: string;
+  color: string;
+  icon?: string;
+  size?: 'sm' | 'lg';
+}
+
+const { mono, color, icon, size = 'lg' } = Astro.props;
+const box = size === 'lg' ? 'size-14 rounded-[14px]' : 'size-8 rounded-[9px]';
+---
+
+{
+  icon ? (
+    <img
+      src={icon}
+      alt=""
+      aria-hidden="true"
+      width={size === 'lg' ? 56 : 32}
+      height={size === 'lg' ? 56 : 32}
+      loading="lazy"
+      class:list={['shrink-0 object-cover', box]}
+    />
+  ) : (
+    <span
+      aria-hidden="true"
+      class:list={[
+        'inline-flex shrink-0 items-center justify-center font-display font-bold text-white',
+        box,
+        size === 'lg' ? 'text-[22px]' : 'text-[15px]',
+      ]}
+      style={`background: ${color}`}
+    >
+      {mono}
+    </span>
+  )
+}

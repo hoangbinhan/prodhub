@@ -1,0 +1,61 @@
+---
+/**
+ * Standalone shell for the Snow Screen pages. Deliberately does not use the
+ * hub's BaseLayout/Tailwind so the app keeps its own look (see ./_design.md).
+ */
+import './_snow.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0B132B" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={new URL('/icons/snowscreen.png', Astro.site)} />
+    <link rel="icon" type="image/png" href="/icons/snowscreen-128.png" />
+    <link rel="apple-touch-icon" href="/icons/snowscreen.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    />
+  </head>
+  <body>
+    <!-- Snow Animation Canvas -->
+    <canvas id="snow-canvas" aria-hidden="true"></canvas>
+
+    <div class="container">
+      <slot />
+
+      <footer>
+        <p>
+          © 2026 Snow Screen. Developed with ❤️ by
+          <a href="https://github.com/hoangbinhan/SnowScreen" target="_blank" rel="noopener">Hoang Binh An</a>. |
+          <a href="/snow-screen/privacy/">Privacy Policy</a>
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      import { startSnow } from './_snow';
+      startSnow('snow-canvas');
+    </script>
+  </body>
+</html>

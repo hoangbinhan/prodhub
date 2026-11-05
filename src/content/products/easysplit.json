@@ -1,0 +1,16 @@
+{
+  "name": "Easy Split",
+  "mono": "S",
+  "accent": "#A16207",
+  "status": "Live",
+  "order": 2,
+  "url": "https://easy-split.pages.dev/",
+  "icon": "https://easy-split.pages.dev/apple-touch-icon.png",
+  "desc": "Split your photos into seamless grids or vertical slides. Perfect for TikTok, Instagram, and more.",
+  "platforms": ["Web"],
+  "hero": {
+    "title": "Split one photo into seamless slides.",
+    "subtitle": "Easy Split is a free browser-based image splitter that cuts one image into multiple equal parts for TikTok photo slides, Instagram carousels, grids, and panoramic posts. Your image is processed locally in your browser and is not uploaded to a server.",
+    "primary": { "label": "Open Easy Split", "href": "https://easy-split.pages.dev/" }
+  }
+}

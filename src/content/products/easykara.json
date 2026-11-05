@@ -1,0 +1,51 @@
+{
+  "name": "EasyKara",
+  "mono": "K",
+  "accent": "#1E3FD8",
+  "status": "Live",
+  "order": 1,
+  "url": "https://easykara.com/",
+  "icon": "https://easykara.com/favicon_io/apple-touch-icon.png",
+  "desc": "Sync lyrics word by word and export watermark-free karaoke MP4 videos at 60fps for free. Pro adds ASS/LRC/SRT downloads and desktop transparent video export.",
+  "platforms": ["Web", "Windows", "macOS", "Linux", "Android"],
+  "supportEmail": "support@easykara.com",
+  "nav": { "cta": { "label": "Open editor", "href": "https://easykara.com/editor" } },
+  "hero": {
+    "badge": "Launch offer · 1 year Pro free for the first 100 users",
+    "title": "Turn any song into a karaoke video.",
+    "subtitle": "Sync lyrics word by word in your browser, then export a karaoke video or a subtitle file. No install needed — desktop apps available too.",
+    "primary": { "label": "Start free on web", "href": "https://easykara.com/editor" },
+    "secondary": { "label": "Download desktop", "href": "#download" },
+    "note": "Windows · macOS (Apple silicon & Intel) · Linux · Web",
+    "screenshot": {
+      "alt": "[SCREENSHOT: EasyKara editor]",
+      "caption": "[SCREENSHOT OF THE EDITOR]"
+    }
+  },
+  "features": [
+    { "icon": "music", "title": "Word-level sync", "desc": "Tap along to the beat to time every word of your lyrics." },
+    { "icon": "video", "title": "Video export", "desc": "Render a ready-to-share karaoke video with highlighted lyrics." },
+    { "icon": "file-text", "title": "Subtitle files", "desc": "Export .ass subtitles to use in your own video editor." },
+    { "icon": "globe", "title": "Many languages", "desc": "Interface in English, Vietnamese, Japanese, Korean and Chinese." }
+  ],
+  "pricing": [
+    {
+      "name": "Free",
+      "price": "$0",
+      "desc": "[WHAT'S INCLUDED IN FREE]",
+      "cta": { "label": "Start free", "href": "https://easykara.com/editor" }
+    },
+    {
+      "name": "Pro",
+      "price": "[YOUR PRICE]",
+      "desc": "[WHAT'S INCLUDED IN PRO]",
+      "cta": { "label": "Get Pro", "href": "#" },
+      "highlight": true
+    }
+  ],
+  "faqs": [
+    { "q": "Do I need to install anything?", "a": "No. The web editor runs in your browser. Desktop apps are optional." },
+    { "q": "Which file formats can I export?", "a": "A karaoke video, or an .ass subtitle file for your own editor." },
+    { "q": "Can I cancel Pro anytime?", "a": "[YOUR CANCELLATION / REFUND ANSWER]" }
+  ]
+}

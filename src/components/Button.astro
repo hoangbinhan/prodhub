@@ -1,0 +1,42 @@
+---
+/** Pill button. Renders an <a> when `href` is set, otherwise a <button type="button">. */
+interface Props {
+  href?: string;
+  variant?: 'accent' | 'dark' | 'outline' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { href, variant = 'dark', size = 'md', class: className, ...rest } = Astro.props;
+
+const variants = {
+  accent: 'bg-accent text-white hover:bg-accent-ink hover:text-white',
+  dark: 'bg-ink text-white hover:bg-ink/85 hover:text-white',
+  outline: 'border border-line-strong text-ink hover:border-ink hover:text-ink',
+  ghost: 'text-body hover:text-ink',
+};
+const sizes = {
+  sm: 'px-[18px] py-[11px] text-sm',
+  md: 'px-[18px] py-3 text-[15px]',
+  lg: 'px-6 py-[15px] text-[15px]',
+};
+const classes = [
+  'inline-flex cursor-pointer items-center justify-center gap-2 rounded-full font-semibold no-underline transition-colors',
+  variants[variant],
+  sizes[size],
+  className,
+];
+---
+
+{
+  href ? (
+    <a href={href} class:list={classes} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type="button" class:list={classes} {...rest}>
+      <slot />
+    </button>
+  )
+}

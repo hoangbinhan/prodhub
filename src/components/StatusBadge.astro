@@ -1,0 +1,17 @@
+---
+interface Props {
+  status: string;
+}
+
+const { status } = Astro.props;
+const upcoming = status === 'Coming soon';
+---
+
+<span
+  class:list={[
+    'rounded-full px-2.5 py-1.5 text-xs font-semibold',
+    upcoming ? 'bg-[#FFF1E6] text-[#9A3412]' : 'bg-[#E8F5EE] text-[#065F46]',
+  ]}
+>
+  {status}
+</span>

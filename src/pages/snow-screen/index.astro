@@ -1,0 +1,165 @@
+---
+/**
+ * Snow Screen landing page — content and look ported from https://snowscreen.pages.dev/.
+ * Design system: ./_design.md
+ */
+import SnowLayout from './_SnowLayout.astro';
+
+const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.hoangbinhan.snowscreen';
+const CHROME_URL =
+  'https://chromewebstore.google.com/detail/snowscreen-%E2%80%94-snow-on-the/gocpcgpipopgcechclgjmcaibffopgko';
+
+const features = [
+  {
+    icon: '🏔️',
+    title: '3D Parallax Depth',
+    desc: 'Multi-layered snow rendering with foreground, midground, and background depth layers for an authentic 3D spatial experience.',
+  },
+  {
+    icon: '📱',
+    title: 'Tilt Sensor Wind',
+    desc: 'Built-in accelerometer integration. Tilt your device left or right to dynamically blow snow sideways in real time.',
+  },
+  {
+    icon: '🌪️',
+    title: 'Random Wind Gusts',
+    desc: 'Simulates realistic natural weather with periodic wind gusts and gentle swirl patterns blowing snow particles.',
+  },
+  {
+    icon: '🏠',
+    title: 'Smart App Filtering',
+    desc: '"Only Home & Lock Screen" mode automatically pauses the snow effect when you open other apps to prevent distraction.',
+  },
+  {
+    icon: '🔋',
+    title: 'Battery & Memory Efficient',
+    desc: 'Utilizes Android Choreographer 60 FPS frame callback with intelligent off-screen particle recycling for zero battery drain.',
+  },
+  {
+    icon: '⚡',
+    title: 'Weather Presets',
+    desc: 'Quickly switch between Gentle Snowfall, Heavy Blizzard, or Magical Crystal Float presets with a single tap.',
+  },
+];
+
+const shapes = [
+  { icon: '❄️', name: 'Stellar Dendrite', desc: '6-Ray fern crystal' },
+  { icon: '🔯', name: 'Hexagonal Plate', desc: 'Geometric crystal star' },
+  { icon: '✳️', name: '8-Point Star', desc: 'Intersecting needles' },
+  { icon: '🫧', name: 'Fluffy Cluster', desc: 'Crystal bead cluster' },
+  { icon: '💎', name: 'Diamond Tip', desc: '6-Ray diamond points' },
+  { icon: '☸️', name: '12-Point Radiant', desc: 'Alternating ray crystal' },
+  { icon: '✝️', name: 'Cross Ice Crystal', desc: 'Needle with satellite dots' },
+  { icon: '✨', name: 'Soft Snow Dust', desc: 'Glowing soft particle' },
+];
+
+const proItems = [
+  'Custom Snow Density Slider (50 - 300)',
+  'Custom Fall Speed & Size (0.5x - 3.0x)',
+  'Custom Base Wind Direction & Drift',
+  'Lifetime Access ($0.99)',
+];
+---
+
+<SnowLayout
+  title="Snow Screen ❄️ - 3D Parallax Snowfall Overlay for Android"
+  description="Snow Screen brings a magical 3D parallax snowfall overlay to your Android status bar, home screen, and lock screen with tilt sensor wind physics and custom crystal shapes."
+>
+  <!-- Header Nav -->
+  <nav aria-label="Main">
+    <a href="/snow-screen/" class="brand">
+      <img class="brand-icon" src="/icons/snowscreen-128.png" alt="" width="36" height="36" />
+      <span>Snow Screen</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#shapes" class="nav-link">Snowflakes</a>
+      <a href="#pro" class="nav-link">Pro Version</a>
+      <a href="/snow-screen/privacy/" class="nav-link">Privacy Policy</a>
+      <a href="#download" class="btn-header">Get App</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-badge">
+        <span aria-hidden="true">✨</span> Android System-Wide Overlay Effect
+      </div>
+      <h1 class="hero-title">Magical 3D Parallax Snowfall for Your Phone</h1>
+      <p class="hero-subtitle">
+        Transform your Android screen into a cozy winter wonderland. Enjoy screen-wide snow falling smoothly over your
+        status bar, home screen, and lock screen with real-time tilt sensor physics.
+      </p>
+      <div class="hero-cta" id="download">
+        <a href={PLAY_URL} class="btn-primary" target="_blank" rel="noopener">
+          <span aria-hidden="true">📱</span> Get on Google Play
+        </a>
+        <a href={CHROME_URL} class="btn-secondary" target="_blank" rel="noopener">
+          <span aria-hidden="true">🧩</span> Add to Chrome
+        </a>
+        <a href="/snow-screen/privacy/" class="btn-secondary">
+          <span aria-hidden="true">🛡️</span> Privacy Policy
+        </a>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+      <h2 class="section-title">Engineered for Performance</h2>
+      <p class="section-subtitle">A native particle engine crafted for 60 FPS smooth rendering and minimal battery impact.</p>
+
+      <div class="features-grid">
+        {
+          features.map((f) => (
+            <div class="feature-card">
+              <div class="feature-icon" aria-hidden="true">
+                {f.icon}
+              </div>
+              <h3 class="feature-title">{f.title}</h3>
+              <p class="feature-desc">{f.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Snowflake Shapes Showcase -->
+    <section class="shapes-section" id="shapes">
+      <h2 class="section-title" style="margin-bottom: 8px;">8 Symmetric Snowflake Crystals</h2>
+      <p class="section-subtitle" style="margin-bottom: 0;">
+        Select your favorite crystal morphologies to customize your snowfall style.
+      </p>
+
+      <div class="shapes-grid">
+        {
+          shapes.map((s) => (
+            <div class="shape-item">
+              <div class="shape-icon" aria-hidden="true">
+                {s.icon}
+              </div>
+              <div>
+                <div class="shape-name">{s.name}</div>
+                <div class="shape-desc">{s.desc}</div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Pro Version Section -->
+    <section class="pro-banner" id="pro">
+      <h2 class="pro-title">Unlock Configuration Pro <span aria-hidden="true">🔒</span></h2>
+      <p class="pro-desc">Take complete control over your snowfall parameters with full fine-tuning controls.</p>
+
+      <ul class="pro-list">
+        {proItems.map((item) => <li class="pro-item">✓ {item}</li>)}
+      </ul>
+
+      <a href={PLAY_URL} class="btn-primary" target="_blank" rel="noopener">
+        <span aria-hidden="true">🔒</span> Unlock Pro in App
+      </a>
+    </section>
+  </main>
+</SnowLayout>
