@@ -4,8 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO: set to your production domain (used for canonical URLs / sitemap).
-  site: 'https://example.com',
+  // Production domain: canonical URLs, OG images, JSON-LD and /sitemap.xml are built from it.
+  site: 'https://prodhub.io.vn',
   vite: {
     plugins: [tailwindcss()],
   },

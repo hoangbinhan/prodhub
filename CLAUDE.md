@@ -29,6 +29,9 @@ Apps are data, not code. `src/content.config.ts` defines two collections (Zod sc
 
 `src/lib/content.ts` holds the shared queries (`getProducts`, `getPolicyIndex`, `parsePolicyId`, href helpers).
 
+### Domain, sitemap, 404
+Production domain is `https://prodhub.io.vn` (`site` in `astro.config.mjs`); canonical, OG and JSON-LD URLs come from it. `src/pages/sitemap.xml.ts` builds the sitemap: static `.astro` routes via `import.meta.glob`, plus product pages (except products whose card links to an external `url`) and policy docs. `public/robots.txt` points to it. `src/pages/404.astro` must stay: without `404.html`, Cloudflare Pages serves the home page with status 200 for every unknown URL.
+
 ### Routes
 - `src/pages/index.astro` — home: hero, product grid with client-side platform filter (`PLATFORM_FILTERS` / `DESKTOP_PLATFORMS` in `src/config.ts`; `groupsFor()` also maps `Android*` → Android and `*extension*` → Desktop), contact modal, social footer.
 - `src/pages/[product]/index.astro` — generic landing generated for every product **except** those with `customPage: true`.

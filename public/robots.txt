@@ -1,0 +1,5 @@
+# All crawlers, including AI search and answer engines, may index this site.
+User-agent: *
+Allow: /
+
+Sitemap: https://prodhub.io.vn/sitemap.xml

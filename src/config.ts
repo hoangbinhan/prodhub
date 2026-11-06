@@ -1,6 +1,6 @@
 // Site-wide settings. Replace the [PLACEHOLDERS] before going live.
 export const SITE = {
-  siteTitle: 'Apps',
+  siteTitle: 'ProdHub — Small apps that do one thing well',
   studioMono: 'h',
   email: 'hoangbinhana3@gmail.com',
   eyebrow: 'Indie apps, built in Vietnam',
