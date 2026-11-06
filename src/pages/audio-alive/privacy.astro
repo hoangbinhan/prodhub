@@ -134,7 +134,7 @@ const permissions = [
       stored on our own servers.
     </p>
 
-    <h2>6. Your choices</h2>
+    <h2 id="delete-data">6. Your choices and deleting your data</h2>
     <ul>
       <li>
         <strong>Reset or delete your advertising ID</strong> in Android Settings → Privacy → Ads. This stops it from being
@@ -142,8 +142,10 @@ const permissions = [
       </li>
       <li><strong>Uninstall the app</strong> to stop all collection immediately.</li>
       <li>
-        <strong>Ask for deletion</strong> by emailing us. Because the data is anonymous, include the approximate date you
-        installed the app and your phone model so we can try to find it.
+        <strong>Ask for deletion</strong> by emailing
+        <a href={`mailto:${APP.email}?subject=${encodeURIComponent('Audio Alive: delete my data')}`}>{APP.email}</a>
+        with the subject "Audio Alive: delete my data". Because the data is anonymous, include the approximate date you
+        installed the app and your phone model so we can find it. We reply within 30 days.
       </li>
     </ul>
 
