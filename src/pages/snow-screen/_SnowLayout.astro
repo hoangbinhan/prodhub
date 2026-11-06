@@ -5,6 +5,7 @@
  */
 import './_snow.css';
 import HubBar from '../../components/HubBar.astro';
+import GoogleAnalytics from '../../components/GoogleAnalytics.astro';
 
 interface Props {
   title: string;
@@ -37,6 +38,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     />
+    <GoogleAnalytics />
   </head>
   <body>
     <!-- Snow Animation Canvas -->

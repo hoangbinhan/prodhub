@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 
 interface Props {
   title: string;
@@ -33,6 +34,7 @@ const themeVars = `--color-accent: ${accent}; --color-accent-ink: color-mix(in o
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
     />
     <slot name="head" />
+    <GoogleAnalytics />
   </head>
   <body style={themeVars}>
     <div class="min-h-screen">

@@ -1,0 +1,194 @@
+---
+/**
+ * Website privacy policy → /privacy/. Covers prodhub.io.vn itself (Google Analytics,
+ * hosting, fonts, email). Each app has its own policy for in-app data; they are linked below.
+ * Keep in sync with src/components/GoogleAnalytics.astro.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { SITE } from '../config';
+import { getPolicyIndex, getProducts } from '../lib/content';
+
+const UPDATED = 'November 6, 2026';
+
+// App policies: generic ones from the policies collection, plus apps with custom pages.
+const policyIndex = await getPolicyIndex();
+const CUSTOM_PRIVACY: Record<string, string> = {
+  'snow-screen': '/snow-screen/privacy/',
+  'audio-alive': '/audio-alive/privacy/',
+};
+const appPolicies = (await getProducts())
+  .map((p) => ({
+    name: p.data.name,
+    href: CUSTOM_PRIVACY[p.id] ?? policyIndex.get(p.id)?.find((d) => d.doc === 'privacy')?.href,
+  }))
+  .filter((p): p is { name: string; href: string } => !!p.href);
+
+const toc = [
+  ['scope', '1. What this policy covers'],
+  ['analytics', '2. Google Analytics'],
+  ['cookies', '3. Cookies'],
+  ['hosting', '4. Hosting and fonts'],
+  ['email', '5. When you email us'],
+  ['choices', '6. Your choices and rights'],
+  ['children', '7. Children'],
+  ['changes', '8. Changes'],
+  ['contact', '9. Contact'],
+];
+---
+
+<BaseLayout
+  title="Privacy Policy — ProdHub"
+  description="How prodhub.io.vn handles visitor data: Google Analytics with consent mode, Cloudflare hosting and Google Fonts. No accounts, no ads, nothing sold."
+>
+  <header class="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur-md">
+    <nav class="container-page flex flex-wrap items-center justify-between gap-4 py-[18px]">
+      <div class="flex flex-wrap items-center gap-2 text-[15px]" aria-label="Breadcrumb">
+        <a href="/" class="px-1 py-2.5 font-medium text-muted no-underline hover:text-ink">All apps</a>
+        <span aria-hidden="true" class="text-faint">/</span>
+        <span class="font-semibold" aria-current="page">Privacy policy</span>
+      </div>
+      <Button href="/" variant="outline" class="font-medium">Back to all apps</Button>
+    </nav>
+  </header>
+
+  <div class="container-page flex flex-wrap items-start gap-12 pt-14 pb-24">
+    <aside class="flex max-w-[280px] flex-[1_1_240px] flex-col gap-0.5 lg:sticky lg:top-24">
+      <nav class="flex flex-col gap-0.5" aria-label="On this page">
+        <span class="pb-2 text-xs font-semibold tracking-[0.08em] text-muted uppercase">On this page</span>
+        {
+          toc.map(([id, text]) => (
+            <a href={`#${id}`} class="py-[7px] text-sm text-muted no-underline hover:text-ink">
+              {text}
+            </a>
+          ))
+        }
+      </nav>
+    </aside>
+
+    <article
+      class="flex min-w-0 flex-[999_1_560px] flex-col gap-9 rounded-[20px] border border-line bg-white p-[clamp(28px,5vw,56px)]"
+    >
+      <div class="flex flex-col gap-2.5 border-b border-line-soft pb-7">
+        <h1 class="m-0 font-display text-[clamp(32px,4vw,46px)] leading-[1.1] font-bold tracking-[-0.02em]">
+          Privacy policy
+        </h1>
+        <span class="text-sm text-muted">prodhub.io.vn · Last updated {UPDATED}</span>
+        <p class="m-0 mt-2 text-base leading-[1.7] text-prose">
+          This website has no accounts, no ads and no forms. We use Google Analytics to count visits and see which
+          pages are useful. We never sell visitor data.
+        </p>
+      </div>
+
+      <div class="policy-prose">
+        <h2 id="scope">1. What this policy covers</h2>
+        <p>
+          This policy covers the website <strong>prodhub.io.vn</strong> (the "site"), run by Hoang Binh An, an
+          independent developer. It does not cover the apps themselves. Each app has its own
+          privacy policy for data handled inside the app:
+        </p>
+        <ul>
+          {
+            appPolicies.map((p) => (
+              <li>
+                <a href={p.href}>{p.name} privacy policy</a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 id="analytics">2. Google Analytics</h2>
+        <p>
+          The site uses <strong>Google Analytics 4</strong>, provided by Google LLC. When you visit a page, Google
+          Analytics records:
+        </p>
+        <ul>
+          <li>Pages you view, how long you stay, and the page or site that sent you here.</li>
+          <li>Clicks on links to app stores and other websites, and clicks on email links (without the address).</li>
+          <li>Device type, operating system, browser, screen size and language.</li>
+          <li>
+            Approximate location (country, region, city), estimated from your IP address. Google Analytics does not
+            store IP addresses.
+          </li>
+        </ul>
+        <p>
+          We use this only to understand which apps and pages people are interested in and to improve the site. Ads
+          features, Google signals and personalisation are turned off. Data is kept in Google Analytics for no longer
+          than 14 months. See <a href="https://policies.google.com/technologies/partner-sites" target="_blank"
+            rel="noopener">how Google uses data from sites that use its services</a
+          >.
+        </p>
+
+        <h2 id="cookies">3. Cookies</h2>
+        <p>
+          Outside the European Economic Area, the United Kingdom and Switzerland, Google Analytics sets first-party
+          cookies (<code>_ga</code> and <code>_ga_*</code>) to tell new and returning visitors apart. They last up to two
+          years.
+        </p>
+        <p>
+          <strong>In the EEA, UK and Switzerland no analytics cookies are set.</strong> The site uses Google Consent Mode:
+          storage is denied by default, and Google Analytics only receives cookieless signals without identifiers, which
+          Google uses to estimate visitor numbers.
+        </p>
+        <p>The site sets no advertising cookies and no cookies of its own.</p>
+
+        <h2 id="hosting">4. Hosting and fonts</h2>
+        <ul>
+          <li>
+            <strong>Cloudflare</strong> hosts the site. Like any web server, it processes your IP address and browser
+            details to deliver pages and protect against attacks. See
+            <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's privacy policy</a
+            >.
+          </li>
+          <li>
+            <strong>Google Fonts</strong> serves the site's typefaces, so your browser connects to Google to download
+            them. See <a href="https://developers.google.com/fonts/faq/privacy" target="_blank" rel="noopener"
+              >Google Fonts privacy</a
+            >.
+          </li>
+        </ul>
+
+        <h2 id="email">5. When you email us</h2>
+        <p>
+          If you email us, for example through a "Contact" or "Notify me" link, we receive your email address and
+          message. We use them only to reply or to send the launch notice you asked for, and delete them when no longer
+          needed.
+        </p>
+
+        <h2 id="choices">6. Your choices and rights</h2>
+        <ul>
+          <li>Block or delete cookies in your browser settings.</li>
+          <li>
+            Install the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener"
+              >Google Analytics opt-out browser add-on</a
+            >, or use a content blocker.
+          </li>
+          <li>
+            Ask us to access or delete emails you sent us. Analytics data has no identifiers we can link to you, so we
+            cannot look it up for an individual.
+          </li>
+        </ul>
+
+        <h2 id="children">7. Children</h2>
+        <p>The site is not directed at children under 13 and we do not knowingly collect their information.</p>
+
+        <h2 id="changes">8. Changes</h2>
+        <p>If we change how the site handles data, we will update this page and the date at the top.</p>
+      </div>
+
+      <section id="contact" class="flex scroll-mt-6 flex-col gap-3 rounded-[14px] bg-paper p-6 text-base leading-[1.7]">
+        <h2 class="m-0 font-display text-2xl font-semibold">9. Contact</h2>
+        <p class="m-0 text-prose">
+          Questions about this policy: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </p>
+      </section>
+    </article>
+  </div>
+
+  <footer class="border-t border-line">
+    <div class="container-page flex flex-wrap justify-between gap-4 pt-8 pb-12 text-sm text-muted">
+      <span>© {new Date().getFullYear()} ProdHub</span>
+      <a href="/" class="text-body">All apps</a>
+    </div>
+  </footer>
+</BaseLayout>

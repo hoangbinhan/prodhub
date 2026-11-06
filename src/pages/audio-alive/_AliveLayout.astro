@@ -6,6 +6,7 @@
 import './_alive.css';
 import { APP } from './_content';
 import HubBar from '../../components/HubBar.astro';
+import GoogleAnalytics from '../../components/GoogleAnalytics.astro';
 
 interface Props {
   title: string;
@@ -58,6 +59,7 @@ const year = new Date().getFullYear();
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     />
     <script type="application/ld+json" set:html={ld} />
+    <GoogleAnalytics />
   </head>
   <body>
     <div class="glow" aria-hidden="true"></div>

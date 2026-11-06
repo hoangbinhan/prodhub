@@ -9,6 +9,12 @@ export const SITE = {
     'A home for every app I make — karaoke videos, photo splitting, snowfall for your screen and more. Pick an app to open its page.',
 };
 
+/**
+ * Google Analytics 4 measurement ID ("G-XXXXXXXXXX", from GA Admin → Data streams → Web).
+ * Empty string = analytics disabled: no script is loaded on any page.
+ */
+export const GA_MEASUREMENT_ID = 'G-HH6Y30E6Q3';
+
 /** Social profiles shown in the home page footer. */
 export const SOCIALS = [
   { label: 'Facebook', href: 'https://www.facebook.com/Hoang.Binh.An.5398/' },

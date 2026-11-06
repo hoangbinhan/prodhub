@@ -1,0 +1,45 @@
+---
+/**
+ * Google Analytics 4 with Consent Mode v2. Include once in every layout's <head>
+ * (BaseLayout, snow-screen and audio-alive layouts). Renders nothing while
+ * GA_MEASUREMENT_ID in src/config.ts is empty.
+ *
+ * Consent: storage is denied by default for EEA/UK/CH visitors (no cookies, GA only receives
+ * cookieless pings it uses for modelling), so no consent banner is needed there. Everywhere
+ * else analytics storage is granted. Ads storage is always denied: the site shows no ads.
+ *
+ * Outbound clicks (Google Play, Chrome Web Store, external app sites) are tracked by GA4
+ * enhanced measurement. mailto: links are not, so they send a `contact_click` event here.
+ */
+import { GA_MEASUREMENT_ID } from '../config';
+
+const EEA = [
+  'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV',
+  'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'IS', 'LI', 'NO', 'GB', 'CH',
+];
+---
+
+{
+  GA_MEASUREMENT_ID && (
+    <>
+      <script is:inline define:vars={{ id: GA_MEASUREMENT_ID, eea: EEA }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        window.gtag = gtag;
+        const denied = { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' };
+        gtag('consent', 'default', { ...denied, analytics_storage: 'denied', region: eea });
+        gtag('consent', 'default', { ...denied, analytics_storage: 'granted' });
+        gtag('js', new Date());
+        gtag('config', id);
+        document.addEventListener('click', (e) => {
+          const a = e.target instanceof Element && e.target.closest('a[href^="mailto:"]');
+          // No address in the payload: GA policy forbids sending email addresses.
+          if (a) gtag('event', 'contact_click', { page_path: location.pathname });
+        });
+      </script>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
+    </>
+  )
+}
