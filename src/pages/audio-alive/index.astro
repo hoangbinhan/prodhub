@@ -1,0 +1,258 @@
+---
+/**
+ * Audio Alive landing page → /audio-alive/. Status: coming soon.
+ * Design system: ./_design.md · Copy and structured data: ./_content.ts
+ */
+import AliveLayout from './_AliveLayout.astro';
+import Icon from './_Icon.astro';
+import MoreApps from '../../components/MoreApps.astro';
+import { APP, PAGE, DEFINITION, STEPS, FEATURES, SPECS, FAQS } from './_content';
+
+const site = Astro.site!;
+const pageUrl = new URL('/audio-alive/', site).href;
+const notifyHref = `mailto:${APP.email}?subject=${encodeURIComponent('Notify me when Audio Alive launches')}`;
+const primary = APP.released
+  ? { href: APP.playUrl, label: 'Get it on Google Play', external: true }
+  : { href: notifyHref, label: 'Notify me at launch', external: false };
+
+const jsonLd = [
+  {
+    '@type': 'WebPage',
+    '@id': `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: PAGE.title,
+    description: PAGE.description,
+    inLanguage: 'en',
+    primaryImageOfPage: new URL(APP.ogImage, site).href,
+    about: { '@id': `${pageUrl}#app` },
+    mainEntity: { '@id': `${pageUrl}#app` },
+    breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+  },
+  {
+    '@type': 'MobileApplication',
+    '@id': `${pageUrl}#app`,
+    name: APP.name,
+    alternateName: 'AudioAlive',
+    description: DEFINITION,
+    url: pageUrl,
+    image: new URL(APP.icon, site).href,
+    screenshot: new URL(APP.ogImage, site).href,
+    operatingSystem: 'Android 8.0+',
+    applicationCategory: 'MultimediaApplication',
+    applicationSubCategory: 'Audio utility',
+    identifier: APP.packageId,
+    featureList: FEATURES.map((f) => f.title),
+    keywords:
+      'USB-C dongle audio cut off, DAC sleep, first second of audio missing, USB-C to 3.5mm adapter, Android audio delay',
+    author: { '@id': `${pageUrl}#developer` },
+    publisher: { '@id': `${pageUrl}#developer` },
+    ...(APP.released && { installUrl: APP.playUrl, downloadUrl: APP.playUrl }),
+  },
+  {
+    '@type': 'Person',
+    '@id': `${pageUrl}#developer`,
+    name: APP.developer,
+    url: new URL('/', site).href,
+    sameAs: APP.socials,
+  },
+  {
+    '@type': 'FAQPage',
+    '@id': `${pageUrl}#faq`,
+    mainEntity: FAQS.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@type': 'HowTo',
+    '@id': `${pageUrl}#howto`,
+    name: 'How to stop a USB-C dongle from cutting off the start of audio on Android',
+    step: STEPS.map((s, i) => ({ '@type': 'HowToStep', position: i + 1, name: s.title, text: s.desc })),
+  },
+  {
+    '@type': 'BreadcrumbList',
+    '@id': `${pageUrl}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Apps', item: new URL('/', site).href },
+      { '@type': 'ListItem', position: 2, name: APP.name, item: pageUrl },
+    ],
+  },
+];
+---
+
+<AliveLayout title={PAGE.title} description={PAGE.description} jsonLd={jsonLd}>
+  <nav class="top" aria-label="Main">
+    <a href="/audio-alive/" class="brand">
+      <img src={APP.icon128} alt="" width="40" height="40" />
+      <span>{APP.name}</span>
+    </a>
+    <div class="nav-links">
+      <a href="#how-it-works" class="nav-link">How it works</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+      <a href="/audio-alive/privacy/" class="nav-link">Privacy</a>
+      <span class="soon-pill"><span class="dot" aria-hidden="true"></span>Coming soon</span>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <span class="eyebrow"><Icon name="wave" size={16} /> Coming soon to Google Play</span>
+        <h1 id="hero-title">Your USB-C dongle stops <em>eating the first second</em> of every song.</h1>
+        <p class="lede">{DEFINITION}</p>
+        <div class="cta">
+          <a
+            href={primary.href}
+            class="btn btn-primary"
+            {...(primary.external && { target: '_blank', rel: 'noopener' })}
+          >
+            <Icon name={APP.released ? 'down' : 'mail'} size={20} />
+            {primary.label}
+          </a>
+          <a href="#how-it-works" class="btn btn-ghost">How it works</a>
+        </div>
+        <p class="cta-note">For {APP.minAndroid}+ · Works with USB-C to 3.5mm DAC dongles</p>
+      </div>
+
+      <div class="device" role="img" aria-label="Audio Alive app: power button switched on, USB dongle connected">
+        <div class="power">
+          <span class="ring"></span>
+          <span class="ring"></span>
+          <span class="ring"></span>
+          <span class="power-btn"><Icon name="power" size={60} /></span>
+        </div>
+        <span class="dongle-pill">
+          <Icon name="usb" size={18} />
+          USB dongle: connected
+          <span class="dot" aria-hidden="true"></span>
+        </span>
+      </div>
+    </section>
+
+    <section class="block" id="problem" aria-labelledby="problem-title">
+      <p class="kicker">The problem</p>
+      <h2 id="problem-title">Why does a USB-C dongle cut off the start of audio?</h2>
+      <p class="section-lede">
+        Cheap USB-C to 3.5mm adapters have a tiny DAC (digital-to-analog converter) that saves power by sleeping after a
+        few seconds of digital silence. When you press play, it has to wake up first, and the first 1–2 seconds of sound
+        are lost.
+      </p>
+      <div class="explain">
+        <div class="card">
+          <h3>Without Audio Alive</h3>
+          <p>Pause, wait, press play: the DAC is asleep, so the opening words, beats or notification sounds vanish.</p>
+          <div class="timeline" aria-hidden="true">
+            <span class="lost" style="height:40%"></span><span class="lost" style="height:70%"></span><span
+              class="lost"
+              style="height:55%"></span><span style="height:85%"></span><span style="height:60%"></span><span
+              style="height:95%"></span><span style="height:50%"></span><span style="height:75%"></span>
+          </div>
+          <div class="timeline-legend"><span>▲ clipped 1–2 s</span><span>playback →</span></div>
+        </div>
+        <div class="card">
+          <h3>With Audio Alive</h3>
+          <p>An inaudible tone keeps the DAC fed, so it never sleeps. Every song, video and voice message starts on time.</p>
+          <div class="timeline" aria-hidden="true">
+            <span style="height:40%"></span><span style="height:70%"></span><span style="height:55%"></span><span
+              style="height:85%"></span><span style="height:60%"></span><span style="height:95%"></span><span
+              style="height:50%"></span><span style="height:75%"></span>
+          </div>
+          <div class="timeline-legend"><span>▲ nothing lost</span><span>playback →</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="how-it-works" aria-labelledby="how-title">
+      <p class="kicker">How it works</p>
+      <h2 id="how-title">Three steps, then forget about it.</h2>
+      <p class="section-lede">
+        Audio Alive plays a 20 kHz tone you cannot hear into the USB output only. The DAC never sees silence, so it never
+        falls asleep.
+      </p>
+      <ol class="steps">
+        {
+          STEPS.map((s) => (
+            <li class="card">
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="block" id="features" aria-labelledby="features-title">
+      <p class="kicker">Features</p>
+      <h2 id="features-title">Built to stay out of your way.</h2>
+      <p class="section-lede">Small, quiet and automatic. It only does one thing, and it does not touch your other apps.</p>
+      <div class="features">
+        {
+          FEATURES.map((f) => (
+            <div class="card feature">
+              <div class="feature-icon">
+                <Icon name={f.icon} size={22} />
+              </div>
+              <h3>{f.title}</h3>
+              <p>{f.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="block" id="specs" aria-labelledby="specs-title">
+      <p class="kicker">At a glance</p>
+      <h2 id="specs-title">Technical details</h2>
+      <div class="card">
+        <table class="specs">
+          <caption class="sr-only">Audio Alive technical specifications</caption>
+          <tbody>
+            {
+              SPECS.map(([k, v]) => (
+                <tr>
+                  <th scope="row">{k}</th>
+                  <td>{v}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="block" id="faq" aria-labelledby="faq-title">
+      <p class="kicker">FAQ</p>
+      <h2 id="faq-title">Frequently asked questions</h2>
+      <div class="faq">
+        {
+          FAQS.map((f, i) => (
+            <details class="card" open={i === 0}>
+              <summary>
+                <h3>{f.q}</h3>
+              </summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="block card closing" aria-labelledby="closing-title">
+      <h2 id="closing-title">Coming soon to Google Play</h2>
+      <p class="section-lede">
+        Audio Alive is in final testing. Send us a quick email and we will reply the day it launches. No newsletter,
+        just one message.
+      </p>
+      <div class="cta">
+        <a href={primary.href} class="btn btn-primary" {...(primary.external && { target: '_blank', rel: 'noopener' })}>
+          <Icon name={APP.released ? 'down' : 'mail'} size={20} />
+          {primary.label}
+        </a>
+        <a href="/audio-alive/privacy/" class="btn btn-ghost"><Icon name="shield" size={20} /> Privacy policy</a>
+      </div>
+    </section>
+
+    <MoreApps current={APP.slug} />
+  </main>
+</AliveLayout>

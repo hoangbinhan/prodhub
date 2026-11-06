@@ -1,0 +1,209 @@
+---
+/**
+ * "More apps" cross-promotion grid for app pages with their own design. Lists every other
+ * product (same order as the hub home). Plain scoped CSS themed by the app's variables:
+ *   --hub-fg, --hub-hover, --hub-border, --hub-card, --hub-title, --hub-tile
+ */
+import { getProducts, productHref } from '../lib/content';
+
+interface Props {
+  /** Slug of the current app, excluded from the list. */
+  current: string;
+}
+
+const { current } = Astro.props;
+const others = (await getProducts()).filter((p) => p.id !== current);
+---
+
+{
+  others.length > 0 && (
+    <section class="more-apps" aria-labelledby="more-apps-title">
+      <div class="more-head">
+        <h2 id="more-apps-title">More apps from the same maker</h2>
+        <a href="/" class="see-all">
+          See all apps <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <ul class="more-grid">
+        {others.map(({ id, data }) => {
+          const external = !!data.url;
+          return (
+            <li>
+              <a
+                class="more-card"
+                href={data.url ?? productHref(id)}
+                {...(external && { target: '_blank', rel: 'noopener' })}
+              >
+                {data.icon ? (
+                  <img class="more-icon" src={data.icon} alt="" width="48" height="48" loading="lazy" />
+                ) : (
+                  <span class="more-icon more-mono" style={`background:${data.accent}`} aria-hidden="true">
+                    {data.mono}
+                  </span>
+                )}
+                <span class="more-text">
+                  <span class="more-name">
+                    {data.name}
+                    {data.status === 'Coming soon' && <span class="more-soon">Coming soon</span>}
+                  </span>
+                  <span class="more-desc">{data.desc}</span>
+                </span>
+                <span class="more-arrow" aria-hidden="true">
+                  {external ? '↗' : '→'}
+                </span>
+                {external && <span class="sr-only-more">(opens in a new tab)</span>}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .more-apps {
+    margin-bottom: 72px;
+  }
+
+  .more-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-bottom: 20px;
+  }
+
+  .more-head h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--hub-title, #ffffff);
+  }
+
+  .see-all {
+    color: var(--hub-hover, #ffffff);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .see-all:hover {
+    text-decoration: underline;
+  }
+
+  .more-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+    gap: 16px;
+  }
+
+  .more-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 100%;
+    padding: 18px 20px;
+    border-radius: 20px;
+    border: 1px solid var(--hub-border, rgba(255, 255, 255, 0.08));
+    background: var(--hub-card, rgba(255, 255, 255, 0.04));
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .more-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--hub-hover, rgba(255, 255, 255, 0.3));
+  }
+
+  .more-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  .more-mono {
+    display: grid;
+    place-items: center;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .more-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .more-name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: var(--hub-title, #ffffff);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .more-soon {
+    padding: 2px 8px;
+    border-radius: 100px;
+    background: var(--hub-tile, rgba(255, 255, 255, 0.08));
+    color: var(--hub-hover, #ffffff);
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .more-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--hub-fg, #9ba7ae);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .more-arrow {
+    flex-shrink: 0;
+    color: var(--hub-fg, #9ba7ae);
+    font-size: 18px;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .more-card:hover .more-arrow {
+    color: var(--hub-hover, #ffffff);
+    transform: translateX(2px);
+  }
+
+  .sr-only-more {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .more-card,
+    .more-arrow {
+      transition: none;
+    }
+    .more-card:hover,
+    .more-card:hover .more-arrow {
+      transform: none;
+    }
+  }
+</style>

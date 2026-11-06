@@ -1,0 +1,78 @@
+---
+/**
+ * Slim "back to the hub" strip for app pages that have their own design (snow-screen,
+ * audio-alive). Plain scoped CSS (those pages do not load Tailwind); colors come from
+ * CSS variables the app's stylesheet sets, so the strip matches each app:
+ *   --hub-fg, --hub-hover, --hub-border, --hub-tile, --hub-tile-fg
+ * Place it inside the page container, above the app's own nav.
+ */
+import { SITE } from '../config';
+---
+
+<div class="hub-bar">
+  <a href="/" class="hub-back">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"
+      ><path d="M19 12H5M11 6l-6 6 6 6"></path></svg
+    >
+    <span class="hub-mono" aria-hidden="true">{SITE.studioMono}</span>
+    <span>All apps</span>
+  </a>
+</div>
+
+<style>
+  .hub-bar {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    border-bottom: 1px solid var(--hub-border, rgba(255, 255, 255, 0.08));
+  }
+
+  .hub-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 4px;
+    color: var(--hub-fg, #9ba7ae);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .hub-back svg {
+    transition: transform 0.2s ease;
+  }
+
+  .hub-back:hover {
+    color: var(--hub-hover, #ffffff);
+  }
+
+  .hub-back:hover svg {
+    transform: translateX(-3px);
+  }
+
+  .hub-mono {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--hub-tile, rgba(255, 255, 255, 0.08));
+    color: var(--hub-tile-fg, #ffffff);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hub-back,
+    .hub-back svg {
+      transition: none;
+    }
+    .hub-back:hover svg {
+      transform: none;
+    }
+  }
+</style>

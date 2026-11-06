@@ -1,0 +1,11 @@
+{
+  "name": "Audio Alive",
+  "mono": "A",
+  "accent": "#12312E",
+  "status": "Coming soon",
+  "order": 4,
+  "customPage": true,
+  "icon": "/icons/audioalive-128.png",
+  "desc": "Stops cheap USB-C to 3.5mm DAC dongles from cutting off the first 1–2 seconds of audio after a pause, with an inaudible keep-alive tone.",
+  "platforms": ["Android"]
+}

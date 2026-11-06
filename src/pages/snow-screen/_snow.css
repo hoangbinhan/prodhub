@@ -13,6 +13,15 @@
     --text-muted: #94A3B8;
     --radius-lg: 24px;
     --radius-md: 16px;
+
+    /* Theme for the shared HubBar / MoreApps components (added). */
+    --hub-fg: var(--text-muted);
+    --hub-hover: var(--accent-ice);
+    --hub-border: rgba(255, 255, 255, 0.08);
+    --hub-card: var(--bg-card);
+    --hub-title: #FFFFFF;
+    --hub-tile: rgba(0, 188, 212, 0.15);
+    --hub-tile-fg: var(--accent-ice);
 }
 
 * {
