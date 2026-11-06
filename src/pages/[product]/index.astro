@@ -29,7 +29,7 @@ const navLinks = [
 ---
 
 <BaseLayout title={`${data.name} — ${hero?.title ?? data.desc}`} description={data.desc} accent={data.accent}>
-  <header class="border-b border-line">
+  <header class="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur-md">
     <nav class="container-page flex flex-wrap items-center justify-between gap-4 py-[18px]">
       <div class="flex flex-wrap items-center gap-2">
         <a href="/" class="px-1 py-2.5 text-[15px] font-medium text-muted no-underline hover:text-ink">All apps</a>

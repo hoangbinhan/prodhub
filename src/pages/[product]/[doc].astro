@@ -38,7 +38,7 @@ const toc = [
   description={entry.data.summary ?? `${entry.data.title} for ${data.name}.`}
   accent={data.accent}
 >
-  <header class="border-b border-line">
+  <header class="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur-md">
     <nav class="container-page flex flex-wrap items-center justify-between gap-4 py-[18px]">
       <div class="flex flex-wrap items-center gap-2 text-[15px]" aria-label="Breadcrumb">
         <a href="/" class="px-1 py-2.5 font-medium text-muted no-underline hover:text-ink">All apps</a>
@@ -54,7 +54,7 @@ const toc = [
   </header>
 
   <div class="container-page flex flex-wrap items-start gap-12 pt-14 pb-24">
-    <aside class="flex max-w-[280px] flex-[1_1_240px] flex-col gap-7 lg:sticky lg:top-6">
+    <aside class="flex max-w-[280px] flex-[1_1_240px] flex-col gap-7 lg:sticky lg:top-24">
       <nav class="flex flex-col gap-1" aria-label="Documents">
         <span class="pb-2 text-xs font-semibold tracking-[0.08em] text-muted uppercase">Documents</span>
         {

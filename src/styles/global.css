@@ -25,6 +25,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Keep anchor targets clear of the sticky header (~69px tall). */
+    scroll-padding-top: 80px;
   }
   body {
     @apply bg-paper font-sans text-ink antialiased;

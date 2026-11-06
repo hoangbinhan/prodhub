@@ -23,7 +23,7 @@ const groupsFor = (platforms: string[]) => {
 ---
 
 <BaseLayout title={SITE.siteTitle} description={SITE.intro}>
-  <header class="border-b border-line bg-paper">
+  <header class="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur-md">
     <nav class="container-page flex flex-wrap items-center justify-between gap-4 py-[18px]">
       <a href="/" aria-label="Home" class="flex items-center text-ink no-underline hover:text-ink">
         <span
@@ -38,7 +38,7 @@ const groupsFor = (platforms: string[]) => {
   </header>
 
   <main>
-    <section class="container-page flex flex-col gap-6 pt-24 pb-18">
+    <section class="container-page flex flex-col gap-6 pt-14 pb-18">
       <span class="text-[13px] font-semibold tracking-[0.08em] text-accent uppercase">{SITE.eyebrow}</span>
       <h1
         class="m-0 max-w-[880px] font-display text-[clamp(40px,6vw,76px)] leading-[1.02] font-bold tracking-[-0.03em]"
